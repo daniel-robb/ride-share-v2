@@ -25,7 +25,7 @@
         <h2 >User Information</h2>
         <br />
         <span>
-          <v-btn v-on:click="helloWorld" height=280 width=220><!--v-on:click="handleSubmit"-->
+          <v-btn v-on:click="getUsers" height=280 width=220><!--v-on:click="handleSubmit"-->
             <h3>View My Rides</h3>
           </v-btn>
           <v-btn v-on:click="helloWorld" height=280 width=220><!--v-on:click="handleSubmit"-->
@@ -66,6 +66,26 @@ export default {
           }
         })
         .catch((err) => this.showSnackbar(err));
+    },
+
+    getUsers() {
+      this.$axios
+        .get("/users")
+        .then((result) => {
+          console.log(result.data.firstName);
+          console.log(result.data.lastName);
+          console.log(result.data.email);
+          console.log(result.data.password);
+          console.log(result.data.phone);
+          console.log(result.data.isAdmin);
+          // this.showSnackbar(result.data.msge);
+          // if (result.data.ok) {
+          //   this.$store.commit("logIn", result.data.details);
+          //   this.$router.push({ name: "home-page" });
+          // }
+        })
+        .catch((err) => console.log(err));
+        // .catch((err) => this.showSnackbar(err));
     },
 
     showSnackbar(msge) {

@@ -25,17 +25,10 @@
         <h2 >User Information</h2>
         <br />
         <span>
-<<<<<<< HEAD
           <v-btn v-on:click="helloWorld" height=280 width=220><!--v-on:click="handleSubmit"-->
             <h3>View My Rides</h3>
           </v-btn>
           <v-btn v-on:click="helloWorld" height=280 width=220><!--v-on:click="handleSubmit"-->
-=======
-          <v-btn height=280 width=220><!--v-on:click="handleSubmit"-->
-            <h3>View My Rides</h3>
-          </v-btn>
-          <v-btn height=280 width=220><!--v-on:click="handleSubmit"-->
->>>>>>> 592717511bc304dfb0c70d58d761f091f11f87a7
             <h3>Register Driver</h3>
           </v-btn>
         </span>
@@ -43,7 +36,6 @@
     </div>
   </v-container>
 </template>
-<<<<<<< HEAD
 
 <script>
 export default {
@@ -87,5 +79,3 @@ export default {
   },
 };
 </script>
-=======
->>>>>>> 592717511bc304dfb0c70d58d761f091f11f87a7

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div>
-      <h4 class="display-1">My Rides</h4>
+      <h4 class="center display-1">My Rides</h4>
 
       <v-data-table
         class="elevation-1"
@@ -21,7 +21,7 @@
               <v-icon small class="ml-2" @click="toggleDriver(item)">
                 mdi-car
               </v-icon>
-              <v-icon small class="ml-2" @click="togglePassenger(item)">
+              <v-icon small color="blue" class="ml-2" @click="togglePassenger(item)">
                 mdi-seat-passenger
               </v-icon>
             </td>
@@ -99,15 +99,21 @@ export default {
 
     // Delete a ride.
     togglePassenger(item) {
-      console.log("Toggled Passenger status for ride " + item);
+      console.log("Toggled Passenger status for ride:");
       console.log(item);
     },
 
     // Delete a ride.
     toggleDriver(item) {
-      console.log("Toggled Driver status for ride " + item);
+      console.log("Toggled Driver status for ride:");
       console.log(item);
     }
   }
 };
 </script>
+
+<style>
+  .ml-2 {
+    color:blue;
+  }
+</style>

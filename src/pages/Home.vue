@@ -1,40 +1,35 @@
 <template>
-  <v-container>
-    <div>
-      <h4 class="display-1">Welcome to Free Rides Only!</h4>
+  <div>
+    <h3 class="center">Welcome to Free Rides Only!</h3>
 
-      <p class="body-1">We hope you're paying</p>
+    <p class="center">We hope you're paying</p>
 
-      <!-- <SearchBar v-model="searchQuery" /> -->
+    <v-divider></v-divider>
 
-      <!-- <SearchBar hint="search hint" :text="searchPhrase" @textChange="onTextChanged" @submit="onSubmit" /> -->
-
-      <v-divider></v-divider>
-
-      <br /><br />
-      
-      <h2>Search for Rides</h2>
-      <br />
-      <div class="searchbar">
-        <input type="search" placeholder="Type in ride information">
-      </div>
-
-      <br /><br /><br /><br />
-      
-      <v-card>
-        <h2 >User Information</h2>
-        <br />
-        <span>
-          <v-btn v-on:click="getUsers" height=280 width=220><!--v-on:click="handleSubmit"-->
-            <h3>View My Rides</h3>
-          </v-btn>
-          <v-btn v-on:click="helloWorld" height=280 width=220><!--v-on:click="handleSubmit"-->
-            <h3>Register Driver</h3>
-          </v-btn>
-        </span>
-      </v-card>
+    <br />
+    
+    <h2 class="center">Search for Rides</h2>
+    <br />
+    <div class="center">
+      <input class="searchbar" type="text" placeholder="Type in ride information">
     </div>
-  </v-container>
+
+    <br /><br />
+    
+    <v-card class="card">
+      <h2 class="center">User Information</h2>
+      <br />
+      <div class="card">
+        <v-btn class="button" v-bind:to="{ name: 'user-rides' }"> <!--height=280 width=220-->
+          <h3>View My Rides</h3>
+        </v-btn>
+        <v-btn class="button" v-bind:to="{ name: 'register' }"> <!--height=280 width=220-->
+          <h3>Register Driver</h3>
+        </v-btn>
+      </div>
+      
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -72,20 +67,9 @@ export default {
       this.$axios
         .get("/users")
         .then((result) => {
-          console.log(result.data.firstName);
-          console.log(result.data.lastName);
-          console.log(result.data.email);
-          console.log(result.data.password);
-          console.log(result.data.phone);
-          console.log(result.data.isAdmin);
-          // this.showSnackbar(result.data.msge);
-          // if (result.data.ok) {
-          //   this.$store.commit("logIn", result.data.details);
-          //   this.$router.push({ name: "home-page" });
-          // }
+          console.log(result.data);
         })
         .catch((err) => console.log(err));
-        // .catch((err) => this.showSnackbar(err));
     },
 
     showSnackbar(msge) {
@@ -99,3 +83,22 @@ export default {
   },
 };
 </script>
+<style>
+html, body {height:100%; margin:0;}
+  .center{
+    float:center;
+    text-align:center;
+  },
+  .searchbar{
+    border:10px solid black;
+  }
+  .button{
+    width:50%;
+    height:30%;
+    background-color: blue;
+  }
+  .card{
+    width:100%;
+    padding-bottom:10%;
+  }
+</style>

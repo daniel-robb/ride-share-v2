@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app dark color="primary">
+  <v-app-bar app dark color="black">
     <router-link v-bind:to="{ name: 'home-page' }">
       <v-toolbar-title class="white--text">
         Free Rides Only
@@ -64,3 +64,8 @@ export default {
   }
 };
 </script>
+<style>
+  div a{
+    text-decoration: none;
+  }
+</style>

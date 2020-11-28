@@ -73,7 +73,7 @@ const init = async () => {
       method: "GET", // Get driver collection
       path: "/rides",
       handler: async (request, h) => {
-        return Ride.query();
+        return Ride.query().withGraphFetched("fromLocation").withGraphFetched("toLocation").withGraphFetched("vehicle");
       },
     },
 

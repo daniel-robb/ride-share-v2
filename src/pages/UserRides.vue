@@ -12,19 +12,17 @@
           <!-- <tr v-bind:class="itemClass(item)"> -->
           <tr>
             <td>{{ item.departTime }}</td>
-            <td>{{ item.toLocation }}</td>
             <td>{{ item.fromLocation }}</td>
+            <td>{{ item.toLocation }}</td>
+            <td>{{ item.distance }}</td>
             <td>{{ item.vehicle }}</td>
             <td>{{ item.cost }}</td>
             <td>
-              <v-icon small @click="deleteRide(item)">
-                mdi-delete
+              <v-icon small class="ml-2" @click="toggleDriver(item)">
+                mdi-car
               </v-icon>
               <v-icon small class="ml-2" @click="togglePassenger(item)">
-                mdi-pencil
-              </v-icon>
-              <v-icon small class="ml-2" @click="toggleDriver(item)">
-                mdi-pencil
+                mdi-seat-passenger
               </v-icon>
             </td>
           </tr>
@@ -51,11 +49,12 @@ export default {
         { text: "Depart Time", value: "departTime" },
         { text: "Origin", value: "fromLocation" },
         { text: "Destination", value: "toLocation" },
+        { text: "Distance", value: "distance" },
         { text: "Vehicle", value: "vehicle" },
         { text: "Total Cost", value: "cost" },
-        { text: "Action", value: "action" }
+        { text: "My Role(s)", value: "roles" }
       ],
-      accounts: [],
+      rides: [],
 
       snackbar: {
         show: false,
@@ -66,12 +65,14 @@ export default {
 
   mounted: function() {
     this.$axios.get("/rides").then(response => {
+      console.log(response);
       this.rides = response.data.map(ride => ({
-        departTime: ride.date,
-        fromLocation: ride.fromLocationId,
-        toLocation: ride.toLocationId,
-        vehicle: ride.vehicleId,
-        cost: ride.fee,
+        departTime: ride.time + " " + ride.date.substr(0,10),
+        fromLocation: ride.fromLocation.name,
+        toLocation: ride.toLocation.name,
+        distance: ride.distance + " mi.",
+        vehicle: ride.vehicle.make + " " + ride.vehicle.model + " (" + ride.vehicle.color + ")",
+        cost: "$" + ride.fee,
       }));
     });
   },
@@ -83,38 +84,30 @@ export default {
       this.snackbar.show = true;
     },
 
-    // // Calculate the CSS class for an item
-    // itemClass(item) {
-    //   const currentAccount = this.$store.state.currentAccount;
-    //   if (currentAccount && currentAccount.id === item.id) {
-    //     return "currentAccount";
-    //   }
-    // },
-
-    // // Update account information.
-    // updateAccount(item) {
-    //   console.log("UPDATE", JSON.stringify(item, null, 2));
-    //   this.showSnackbar("Sorry, update is not yet implemented.");
-    // },
-
-    // Delete an account.
+    // Delete a ride.
     deleteRide(item) {
-      this.$axios.delete(`/ride/${item.id}`).then(response => {
+      this.$axios.delete(`/rides/${item.id}`).then(response => {
         if (response.data.ok) {
-          // The delete operation worked on the server; delete the local account
-          // by filtering the deleted account from the list of accounts.
-          this.accounts = this.accounts.filter(
-            account => account.id !== item.id
+          // The delete operation worked on the server; delete the local ride
+          // by filtering the deleted ride from the list of rides.
+          this.rides = this.rides.filter(
+            ride => ride.id !== item.id
           );
         }
       });
+    },
+
+    // Delete a ride.
+    togglePassenger(item) {
+      console.log("Toggled Passenger status for ride " + item);
+      console.log(item);
+    },
+
+    // Delete a ride.
+    toggleDriver(item) {
+      console.log("Toggled Driver status for ride " + item);
+      console.log(item);
     }
   }
 };
 </script>
-
-<style>
-.currentAccount {
-  background: lightcoral;
-}
-</style>

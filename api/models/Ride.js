@@ -12,15 +12,20 @@ class Ride extends Model {
     const Drivers = require("./Drivers.js");
 
     return {
-      location: {
+      toLocation: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Location,
+        join: {
+          from: "Ride.toLocationId",
+          to: "Location.id",
+        },
+      },
+
+      fromLocation: {
         relation: Model.BelongsToOneRelation,
         modelClass: Location,
         join: {
           from: "Ride.fromLocationId",
-          to: "Location.id",
-        },
-        join: {
-          from: "Ride.toLocationId",
           to: "Location.id",
         },
       },

@@ -32,14 +32,14 @@
         </div>
 
         <div class="flex-child">
-        <v-card-actions>
+        <v-card-actions v-if="isLoggedIn">
           <v-btn 
                   class="white--text"
                   v-bind:style="{
                     'float':`right`,
                     'margin':`0 auto`
                   }" 
-                  v-on:click="doSearch" 
+                  v-on:click="printWords('Congratulations! You clicked on a joke button! :D')" 
                   color="black" 
           >Search
           </v-btn>
@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <br/><br/><br/>
+      <br/>
 
       <v-data-table
         class="elevation-1"
@@ -75,10 +75,12 @@
         </template>
       </v-data-table>
 
-      <br/><br/><br/>
+      <v-container v-if="isLoggedIn">
+      
+      <br/><br/>
       
       <h2 class="center">User Information</h2>
-      <div>
+      
         <v-btn 
                 class="white--text" 
                 v-bind:style="{
@@ -104,7 +106,7 @@
         >
           <h3>Register Driver</h3>
         </v-btn>
-      </div>
+      </v-container>
       <!-- <br /> -->
     </v-card>
 
@@ -140,6 +142,27 @@ export default {
         msge: "",
       },
     };
+  },
+
+
+      // console.log("departTime: " + response.data.time + " " + response.data.date.substr(0,10));
+      // console.log("fromLocationId: " + response.data.fromLocationId);
+      // console.log("toLocationId: " + response.data.toLocationId);
+      // console.log("distance: " + response.data.distance + " mi.");
+      // console.log("vehicleId: " + response.data.vehicleId);
+      // console.log("cost: " + response.data.fee);
+
+  mounted: function() {
+    this.$axios.get("/rides/2").then(response => {
+      this.rides = response.data.map(ride=>({
+        departTime: ride.time + " " + ride.date.substr(0,10),
+        fromLocation: ride.fromLocationId.name,
+        toLocation: ride.toLocationId.name,
+        distance: ride.distance + " mi.",
+        vehicle: ride.vehicleId,
+        cost: ride.fee,
+      }));
+    });
   },
 
   methods: {
@@ -179,7 +202,11 @@ export default {
 
     doSearch(){
       console.log("Other words!");
-    }
+    },
+
+    printWords(words){
+      console.log(words);
+    },
   },
 };
 </script>

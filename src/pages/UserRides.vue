@@ -64,15 +64,15 @@ export default {
   },
 
   mounted: function() {
+    let temp='$';
     this.$axios.get("/rides").then(response => {
-      console.log(response);
       this.rides = response.data.map(ride => ({
         departTime: ride.time + " " + ride.date.substr(0,10),
         fromLocation: ride.fromLocation.name,
         toLocation: ride.toLocation.name,
         distance: ride.distance + " mi.",
         vehicle: ride.vehicle.make + " " + ride.vehicle.model + " (" + ride.vehicle.color + ")",
-        cost: "$" + ride.fee,
+        cost: temp + ride.fee,
       }));
     });
   },

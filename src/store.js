@@ -26,6 +26,9 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn(state) {
       return state.currentAccount !== null;
+    },
+    getEmail(state) {
+      return state.currentAccount.email;
     }
   },
 

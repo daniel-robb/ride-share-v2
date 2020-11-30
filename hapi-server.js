@@ -335,6 +335,10 @@ const init = async () => {
       options: {
         validate: {
           payload: Joi.object({
+            userId: Joi.number().integer()
+              .min(1)
+              .max(1000)
+              .required(),
             licenseNumber: Joi.string()
               .min(1)
               .max(30)
@@ -347,15 +351,31 @@ const init = async () => {
         },
       },
       handler: async (request, h) => {
+        const existingDriver = await Driver.query()
+          .where("userId", request.payload.userId)
+          .first();
+        if (existingDriver) {
+          return {
+            ok: false,
+            msge: `This user is already a driver '${request.payload.email}'`,
+          };        }
         let driver = await Driver.query().insert({
-          userId: 1, //NOTE Currently makes user 1 default driver in all cases, so that an admin can create a new driver and then patch in the correct userId immediately afterward
+          userId: request.payload.userId,
           licenseNumber: request.payload.licenseNumber,
           licenseState: request.payload.licenseState,
         });
-        if (driver) return h.response(driver).code(201);
-        return Boom.badRequest(
-          `Could not create driver with ID ${request.params.id}`
-        ); //NOTE Should verify user is not already registered as a driver
+
+        if (driver) {
+          return {
+            ok: true,
+            msge: `Created account '${request.payload.email}'`,
+          };
+        } else {
+          return {
+            ok: false,
+            msge: `Couldn't create account with email '${request.payload.email}'`,
+          };
+        }
       },
     },
 

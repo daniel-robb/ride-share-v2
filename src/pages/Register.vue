@@ -107,29 +107,30 @@ export default {
       // Haven't been successful yet.
       this.registrationSuccessful = false;
 
-      /*
-      // Post the content of the form to the Hapi server.
       this.$axios
-        .post("/accounts", {
-          //NOTE Will actually be using driver's uID, as found by email
-          firstName: this.newDriver.firstName,
-          lastName: this.newDriver.lastName,
-          email: this.newDriver.email,
-          password: this.newDriver.password,
-        })
-        .then((result) => {
-          // Based on whether things worked or not, show the
-          // appropriate dialog.
-          if (result.data.ok) {
-            this.showDialog("Success", result.data.msge);
-            this.registrationSuccessful = true;
-          } else {
-            this.showDialog("Sorry", result.data.msge);
-          }
-        })
-        .catch((err) => this.showDialog("Failed", err));
-        */
-       console.log(this.newDriver);
+        .get("/users")
+        .then(response => {
+          console.log(this.$store.getters.getEmail);
+
+          response.data.forEach(async (user) => {
+            if (user.email == this.newDriver.email) { //The specified email does in fact belong to a user
+              const result = await this.$axios
+                .post("/drivers", {
+                  userId: user.id,
+                  licenseNumber: this.newDriver.licenseNum,
+                  licenseState: this.newDriver.licenseState,
+                })
+                .catch((err) => this.showDialog("Failed", err));
+
+                if (result.data.ok == true) {
+                  this.showDialog("Success", `${this.newDriver.email} is now a Free Rides Only driver`);
+                  this.registrationSuccessful = true;
+                } else {
+                  this.showDialog("Sorry", `${this.newDriver.email} is already registered as a driver`);
+                }
+            }
+          });
+        }).catch((err) => this.showDialog("Failed", err));
     },
 
     // Helper method to display the dialog box with the appropriate content.

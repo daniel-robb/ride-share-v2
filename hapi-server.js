@@ -46,6 +46,46 @@ const init = async () => {
     },
 
     {
+      method: "POST",
+      path: "/login",
+      config: {
+        description: "Log in",
+        validate: {
+          payload: Joi.object({
+            email: Joi.string().email().required(),
+            password: Joi.string().min(8).required(),
+          }),
+        },
+      },
+      handler: async (request, h) => {
+        const user = await User.query()
+          .where("email", request.payload.email)
+          .first();
+        if (
+          user &&
+          (await user.verifyPassword(request.payload.password))
+        ) {
+          return {
+            ok: true,
+            msge: `Logged in successfully as '${request.payload.email}'`,
+            //NOTE May not need all of the following details
+            details: {
+              id: user.id,
+              firstName: user.first_name,
+              lastName: user.last_name,
+              email: user.email,
+            },
+          };
+        } else {
+          return {
+            ok: false,
+            msge: "Invalid email or password",
+          };
+        }
+      },
+    },
+
+    {
       method: "GET", // Get user collection
       path: "/users",
       handler: async (request, h) => {

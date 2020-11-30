@@ -1,4 +1,7 @@
 const { knex, Model } = require("../../db");
+const { hash, compare } = require("bcrypt");
+
+const SALT_ROUNDS = 10;
 
 class User extends Model{
     static get tableName(){
@@ -39,6 +42,19 @@ class User extends Model{
       .catch((err) => {
         console.log(err);
       });
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    async $beforeInsert(queryContext) {
+      this.password = await hash(this.password, SALT_ROUNDS);
+    }
+    async $beforeUpdate(opt, queryContext) { //ADDED THIS AND CHANGED BUTTON TYPES TO PASSWORD
+      this.password = await hash(this.password, SALT_ROUNDS);
+      return super.$beforeUpdate(opt, queryContext);
+    }
+
+    async verifyPassword(plainTextPassword) {
+      return compare(plainTextPassword, this.password);
     }
 }
 

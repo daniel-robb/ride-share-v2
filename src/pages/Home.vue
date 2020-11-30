@@ -16,16 +16,35 @@
     <br /><br />
     
     <h2 class="center">User Information</h2>
-    <vs-button-group>
-      <v-btn class="button white--text" height=320 padding-left=100 v-bind:to="{ name: 'user-rides' }" v-bind:class="black">
+    <div>
+      <v-btn 
+              class="button white--text" 
+              v-bind:style="{
+                'width':`50%`, 
+                'border':`16px solid #333`, 
+                'background-color':`black`
+              }" 
+              height=320 
+              padding-left=100 
+              v-bind:to="{ name: 'user-rides' }"
+      >
         <h3>View My Rides</h3>
       </v-btn>
-      <v-btn class="button white--text" height=320 v-bind:to="{ name: 'register' }"> <!--height=280 width=220-->
+      <v-btn 
+              class="white--text" 
+              v-bind:style="{
+                'width':`50%`, 
+                'border':`16px solid #333`, 
+                'background-color':`black`
+              }" 
+              height=320 
+              v-bind:to="{ name: 'register' }"
+      >
         <h3>Register Driver</h3>
       </v-btn>
       <br />
       <br />
-    </vs-button-group>
+    </div>
     
   </div>
 </template>
@@ -93,7 +112,6 @@ export default {
   }
   .button{
     width:50%;
-    background-color: black;
     border: 20px solid red;
   }
   .card{

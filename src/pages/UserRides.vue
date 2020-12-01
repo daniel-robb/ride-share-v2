@@ -64,6 +64,7 @@ export default {
   },
 
   mounted: function() {
+<<<<<<< HEAD
     const email = this.$store.getters.getEmail;
     let userId;
 
@@ -127,12 +128,17 @@ export default {
 
       //Map all appropriate rides into the table
       this.rides = userRides.map(ride => ({
+=======
+    let temp='$';
+    this.$axios.get("/rides").then(response => {
+      this.rides = response.data.map(ride => ({
+>>>>>>> 51f21217c25038621afc97d959ae46c65a0f4091
         departTime: ride.time + " " + ride.date.substr(0,10),
         fromLocation: ride.fromLocation.name,
         toLocation: ride.toLocation.name,
         distance: ride.distance + " mi.",
         vehicle: ride.vehicle.make + " " + ride.vehicle.model + " (" + ride.vehicle.color + ")",
-        cost: "$" + ride.fee,
+        cost: temp + ride.fee,
       }));
     });
   },

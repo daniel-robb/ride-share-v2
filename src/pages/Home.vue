@@ -15,11 +15,10 @@
       <div class="flex-container">
         <div class="flex-child"
         v-bind:style="{
+                  'flex':`.5`, 
                   'width':`10%`, 
                   'text-color':`white`, 
                   'background-color':`white`,
-                  'float':`right`,
-                  'margin':`0 auto`
                 }"
         >
           <select class="form-control" @change="changeSearchOption($event)">

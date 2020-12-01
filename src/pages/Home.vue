@@ -74,6 +74,8 @@
         class="elevation-1"
         v-bind:headers="headers"
         v-bind:items="rides"
+        id="hiddenTable"
+        hidden=true
       >
         <template v-slot:item="{ item }">
           <!-- <tr v-bind:class="itemClass(item)"> -->
@@ -223,6 +225,7 @@ export default {
     },
 
     doSearch(){
+      document.getElementById ("hiddenTable").hidden =false;
       console.log("SEARCH: " + this.search);
       this.$axios.get("/rides")
                 .then(response => {

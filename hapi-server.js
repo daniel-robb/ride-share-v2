@@ -220,6 +220,9 @@ const init = async () => {
       handler: async (request, h) => {
         let ride = await Ride.query()
           .where("id", request.params.id)
+          .withGraphFetched("fromLocation")
+          .withGraphFetched("toLocation")
+          .withGraphFetched("vehicle")
           .first();
         if (ride) return ride;
         return Boom.notFound(`No ride with ID ${request.params.id}`);
@@ -286,6 +289,31 @@ const init = async () => {
           .first();
         if (vehicleType) return vehicleType;
         return Boom.notFound(`No vehicle-type with ID ${request.params.id}`);
+      },
+    },
+
+    {
+      method: "GET", // Create new driver-on-ride association.
+      path: "/rides-by-driver/{id}",
+      options: {
+        validate: {
+          params: Joi.object({
+            id: Joi.number()
+              .integer()
+              .min(1)
+              .required(),
+          }),
+        },
+      },
+      handler: async (request, h) => {
+        if (!(await Driver.query().findById(request.params.id))) {
+          return h.response(`Driver ${request.params.id} not found`).code(404);
+        }
+
+        return Drivers.query()
+          .where({
+            driverId: request.params.id,
+          });
       },
     },
 

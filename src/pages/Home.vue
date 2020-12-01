@@ -13,6 +13,27 @@
       <h2 class="center">Search for Rides</h2>
       
       <div class="flex-container">
+        <div class="flex-child"
+        v-bind:style="{
+                  'width':`10%`, 
+                  'text-color':`white`, 
+                  'float':`right`,
+                  'margin':`0 auto`
+                }"
+        >
+          <select class="form-control" @change="changeSearchOption($event)">
+            <option class="center" value="" selected disabled>
+              Choose
+            </option>
+            <option 
+                    v-for="searchOption in searchOptions" 
+                      :value="searchOption.id" 
+                      :key="searchOption.id"
+            >
+              {{ searchOption.name }}
+            </option>
+          </select>
+        </div>
 
         <div class="flex-child">
         <v-form>
@@ -22,24 +43,24 @@
                     'border':`1px solid white`,
                     'width':`100%`,
                     'margin':`0 auto`
-                  }" 
+                  }"
                   id="search"
                   label="Type in ride information"
                   name="search"
-                  type="search"
+                  @change="doSearch"
           />
         </v-form>
         </div>
 
         <div class="flex-child">
-        <v-card-actions>
+        <v-card-actions v-if="isLoggedIn">
           <v-btn 
                   class="white--text"
                   v-bind:style="{
                     'float':`right`,
                     'margin':`0 auto`
                   }" 
-                  v-on:click="doSearch" 
+                  v-on:click="printWords('Congratulations! You clicked on a joke button! :D')" 
                   color="black" 
           >Search
           </v-btn>
@@ -47,7 +68,7 @@
         </div>
       </div>
 
-      <br/><br/><br/>
+      <br/>
 
       <v-data-table
         class="elevation-1"
@@ -75,10 +96,12 @@
         </template>
       </v-data-table>
 
-      <br/><br/><br/>
+      <v-container v-if="isLoggedIn">
+      
+      <br/><br/>
       
       <h2 class="center">User Information</h2>
-      <div>
+      
         <v-btn 
                 class="white--text" 
                 v-bind:style="{
@@ -104,7 +127,7 @@
         >
           <h3>Register Driver</h3>
         </v-btn>
-      </div>
+      </v-container>
       <!-- <br /> -->
     </v-card>
 
@@ -131,9 +154,17 @@ export default {
         { text: "My Role(s)", value: "roles" }
       ],
       rides: [],
-      
-      email: "",
-      password: "",
+          
+      search: this.search,
+
+      searchOptions: [
+        { name: "Address", id: 1 },
+        { name: "City", id: 2 },
+        { name: "Name", id: 3 },
+        { name: "State", id: 4 },
+        { name: "Zip code", id: 5 }
+      ],
+      selectedSearchOptions: null,
 
       snackbar: {
         show: false,
@@ -141,6 +172,16 @@ export default {
       },
     };
   },
+
+
+      // console.log("departTime: " + response.data.time + " " + response.data.date.substr(0,10));
+      // console.log("fromLocationId: " + response.data.fromLocationId);
+      // console.log("toLocationId: " + response.data.toLocationId);
+      // console.log("distance: " + response.data.distance + " mi.");
+      // console.log("vehicleId: " + response.data.vehicleId);
+      // console.log("cost: " + response.data.fee);
+
+
 
   methods: {
     logIn() {
@@ -177,9 +218,33 @@ export default {
       console.log("Words!");
     },
 
+    printWords(words){
+      console.log(words);
+    },
+
     doSearch(){
-      console.log("Other words!");
+      console.log("SEARCH: " + this.search);
+      this.$axios.get("/rides")
+                .then(response => {
+        response.data.forEach(ride=>{
+          if(!this.rides.includes(ride) && (ride.distance).toString().includes(this.search)){
+            this.rides += {
+              departTime: ride.time + " " + ride.date.substr(0,10),
+              fromLocation: ride.fromLocationId.name,
+              toLocation: ride.toLocationId.name,
+              distance: ride.distance + " mi.",
+              vehicle: ride.vehicleId,
+              cost: ride.fee,
+            }
+          }
+        });
+      });
+    },
+
+    changeSearchOptions(){
+      this.selectedSearchOptions = event.target.options[event.target.options.selectedIndex].text
     }
+
   },
 };
 </script>

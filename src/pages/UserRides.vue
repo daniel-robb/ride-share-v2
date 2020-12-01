@@ -64,75 +64,9 @@ export default {
   },
 
   mounted: function() {
-<<<<<<< HEAD
-    const email = this.$store.getters.getEmail;
-    let userId;
-
-    this.$axios.get("/users")
-        .then(response => {
-          response.data.forEach(async (user) => {
-            if (user.email == email) { //Found the logged-in user
-              userId = user.id;
-              console.log(userId);
-            }
-          });
-        })
-        .catch((err) => this.showDialog("Failed", err));
-
-
-    this.$axios.get("/rides").then(async response => {
-      let userRides = [];
-      
-      let passengers;
-      await this.$axios.get("/passengers")
-        .then(passengerResponse => {
-          passengers = passengerResponse.data; //Store all passenger associations in "passengers"
-        });
-      
-      let drivers;
-      let driverId = undefined;
-      let driverRides;
-      await this.$axios.get("/drivers")
-        .then(driversResponse => { drivers = driversResponse.data; }); //Store all drivers in "drivers"
-
-      drivers.forEach(driver => { 
-        if (driver.userId == userId) {
-          console.log(driver);
-          driverId = driver.id;
-        }
-      });
-
-      driverRides = await this.$axios.get(`/rides-by-driver/${driverId}`);
-
-      driverRides.data.forEach(async driver_ride => { //Add each ride the user is driving on to userRides
-        let ride;
-        await this.$axios.get(`/rides/${driver_ride.rideId}`) //This is not being waited for, and is thus not displaying in the table
-          .then(result => ride = result.data);
-        console.log(ride);
-        userRides.push(ride);
-      });
-
-      response.data.forEach(ride => { //Loop through all rides
-        passengers.forEach(passenger => { //And passengers
-          if (passenger.rideId == ride.id && passenger.user.email == email) {
-            //Check if the passenger is on the current ride, and if it is the user currently logged in
-            userRides.push(ride); //If it is, add the ride to userRides, which will be displayed in the table
-          }
-        });
-      });
-      
-      console.log("userRides:")
-      userRides.forEach(ride => {
-        console.log(ride);
-      });
-
-      //Map all appropriate rides into the table
-      this.rides = userRides.map(ride => ({
-=======
     let temp='$';
     this.$axios.get("/rides").then(response => {
       this.rides = response.data.map(ride => ({
->>>>>>> 51f21217c25038621afc97d959ae46c65a0f4091
         departTime: ride.time + " " + ride.date.substr(0,10),
         fromLocation: ride.fromLocation.name,
         toLocation: ride.toLocation.name,

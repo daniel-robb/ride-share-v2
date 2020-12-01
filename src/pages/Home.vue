@@ -17,6 +17,7 @@
         v-bind:style="{
                   'width':`10%`, 
                   'text-color':`white`, 
+                  'background-color':`white`,
                   'float':`right`,
                   'margin':`0 auto`
                 }"

@@ -657,13 +657,6 @@ const init = async () => {
             rideId: request.params.rid,
           })
           .returning("*");
-
-        /*
-          return Driver.relatedQuery("drivers")
-          .for(request.params.did)
-          .relate(request.params.rid)
-          .then(() => h.response()); 
-        */
       },
     },
 

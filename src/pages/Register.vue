@@ -81,12 +81,7 @@ export default {
       dialogText: "<no dialogText>",
       dialogVisible: false,
 
-      // Validation rules for the form fields. This functionality is an extension
-      // that's part of the Vuetify package. Each rule is a list of functions
-      // (note the fat arrows). Vuetify invokes all functions in the list,
-      // passing it the content of the associated form field. Functions should
-      // return either true (the field passes that validation) or a string
-      // containing an error message indicating why the field doesn't pass validation.
+      // Validation rules for the form fields. 
       rules: {
         required: [(val) => val.length > 0 || "Required"],
         email: [
